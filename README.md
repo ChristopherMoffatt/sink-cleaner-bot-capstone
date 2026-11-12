@@ -163,3 +163,17 @@ Save the map before stopping SLAM, using a new name so that existing maps are ke
 cd ~/Capstone_2026/drain_2dnav/maps
 rosrun map_server map_saver -f room_map_YYYY-MM-DD
 ```
+
+## Committing and pushing from the robot
+
+This folder is the git repo for [sink-cleaner-bot-capstone](https://github.com/ChristopherMoffatt/sink-cleaner-bot-capstone).
+
+The easiest way is VS Code over Remote-SSH:
+
+1. Open the folder `/home/administrator/catkin_ws/src/Capstone_2026` (not `~/apriltag_tracking`).
+2. In the Source Control panel, write a message and commit.
+3. Click **Sync Changes**. This pulls anything new from GitHub, then pushes. Sign in with GitHub in the browser if asked.
+
+From a terminal, run `cd ~/Capstone_2026`, then `git pull --rebase` and `git push`. When asked for a password, use a GitHub personal access token.
+
+Pushing needs write access to the repo; ask the repo owner to add you as a collaborator. Commits made on the robot use the author set for this repo (`git config user.name`); change it if someone else is committing.
