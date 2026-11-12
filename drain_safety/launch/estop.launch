@@ -1,0 +1,15 @@
+<launch>
+  <!-- PS4 software e-stop. Start this first and leave it running; autonomy
+       nodes refuse to move without its /e_stop heartbeat.
+       Circle latches the stop, Share + Options held 1 s releases it. -->
+  <node pkg="drain_safety" type="estop_node.py" name="estop" output="screen" respawn="true">
+    <param name="joy_topic" value="/bluetooth_teleop/joy"/>
+    <param name="estop_button" value="1"/>
+    <!-- 0-indexed into /bluetooth_teleop/joy buttons; verified on this controller: circle=1, Share=6, Options=7 -->
+    <rosparam param="reset_buttons">[6, 7]</rosparam>
+    <param name="reset_hold_s" value="1.0"/>
+    <param name="joy_timeout_s" value="1.0"/>
+    <!-- Nodes shut down when the e-stop latches. Add future autonomy nodes here. -->
+    <rosparam param="kill_nodes">["/tag_approach"]</rosparam>
+  </node>
+</launch>

@@ -1,0 +1,40 @@
+TrajectoryPlannerROS:
+  #–– LOOK‑AHEAD
+  sim_time:                5.0       # ~0.5 m horizon @0.1 m/s
+  sim_granularity:         0.02
+  angular_sim_granularity: 0.02
+ 
+  #–– DRIVE TYPE
+  holonomic_robot:         true
+ 
+  #–– VELOCITY LIMITS
+  max_vel_x:               0.10      # 10 cm/s
+  min_vel_x:               0.02
+  max_vel_y:               0.10      # +/- 10 cm/s strafing
+  min_vel_y:              -0.10
+  max_vel_theta:           0.15      # 0.15 rad/s (9 degrees/s)
+  min_in_place_vel_theta:  0.05
+ 
+  #–– ACCELERATION
+  acc_lim_x:               0.05
+  acc_lim_y:               0.05
+  acc_lim_theta:           0.01
+ 
+  #–– SAMPLING & RATE
+  controller_frequency:    30.0
+  vx_samples:              10
+  vy_samples:              10
+  vtheta_samples:          20
+ 
+  #–– SCORING
+  meter_scoring:           true
+  pdist_scale:             1.0       # strongly track path
+  gdist_scale:             0.2       # downplay pure‐goal yaw pulls
+  occdist_scale:           0.1       # smooth around obstacles
+  heading_scoring:         false     # forced in‑place yaw
+ 
+  #–– OSCILLATION/ESCAPE
+  oscillation_reset_dist:  0.5       # need 0.5 m before reset
+  escape_reset_dist:       0.0       # disable escape‐distance trigger
+  escape_reset_theta:      0.0       # disable escape‐angle trigger
+  prune_plan:              true      # keep global plan fresh

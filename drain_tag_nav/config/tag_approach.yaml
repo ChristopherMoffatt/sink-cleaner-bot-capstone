@@ -1,0 +1,37 @@
+# Parameters for tag_approach_node.py. Distances in metres, angles in radians.
+
+# Target
+target_id: 0                  # AprilTag ID to drive to; -1 = any tag
+stop_distance_m: 0.6          # stop when the tag is this far in front of the camera
+distance_tolerance_m: 0.03
+
+# Tag size: the black square, outer edge to outer edge (white margin not included).
+tag_size_m: 0.2032            # printed tag 0 measures 8 in
+detector_tag_size_m: 0.10     # tag_size in ~/apriltag_tracking/.../apriltag_pipeline.launch.
+                              # If that is changed to match the real tag, set this to the same value.
+bearing_tolerance_rad: 0.05
+
+# Search (spin in place)
+search_angular_speed: 0.25    # rad/s; slow so the camera image is not blurred
+search_max_turns: 1.1         # give up after this many turns without the tag
+confirm_detections: 3         # detections needed before driving
+confirm_timeout_s: 1.5
+tag_lost_timeout_s: 1.0       # tag unseen this long during the approach -> search again
+
+# Approach
+max_linear_speed: 0.15        # m/s
+min_linear_speed: 0.03        # creep speed near the goal so it actually reaches stop_distance_m
+max_angular_speed: 0.4        # rad/s
+k_linear: 0.5
+k_angular: 0.8
+turn_first_bearing_rad: 0.35  # no forward motion when the tag is more than ~20 deg off-centre
+
+# LiDAR guard. Ridgeback footprint is about 0.96 x 0.79 m.
+robot_half_length_m: 0.48
+robot_half_width_m: 0.40
+front_clearance_m: 0.25       # no forward motion if anything is this close ahead of the bumper
+spin_clearance_m: 0.10        # no spinning if anything is this close to the swept circle
+scan_timeout_s: 0.5
+
+# Safety heartbeat from drain_safety/estop_node.py
+estop_heartbeat_timeout_s: 0.5

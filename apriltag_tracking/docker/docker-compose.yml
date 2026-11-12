@@ -1,0 +1,22 @@
+name: apriltag_tracking
+
+services:
+  apriltag_tracking:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: apriltag_tracking
+    container_name: apriltag_tracking
+    restart: unless-stopped
+    # Host networking: the nodes join the ROS master running on the host (the robot's roscore),
+    # so the tag topics are visible to `rostopic` on the host. Also serves 8080 (web_video_server)
+    # and 9090 (rosbridge websocket) directly on the host.
+    network_mode: host
+    environment:
+      - ROS_MASTER_URI=http://localhost:11311
+      # "auto" = first external (USB) camera found; or pin one, e.g. /dev/video2
+      - CAMERA_DEVICE=${CAMERA_DEVICE:-auto}
+    volumes:
+      - /dev:/dev       # whole /dev so cameras plugged in later are visible too
+    device_cgroup_rules:
+      - "c 81:* rmw"    # allow access to all V4L2 video devices

@@ -1,0 +1,15 @@
+<launch>
+  <!-- Where the AprilTag camera sits on the robot, so tag poses
+       (stamped in camera_optical_frame) can be shown relative to base_link.
+       Camera faces forward, not tilted, on the centreline:
+       x = 1.5 ft (0.4572 m) forward, y = 0, z = 2 ft (0.6096 m) up.
+       The rotation (yaw -90 deg, roll -90 deg) converts the robot's axes
+       (x forward, y left, z up) to the camera's optical axes
+       (x right, y down, z forward). -->
+  <arg name="x" default="0.4572"/>
+  <arg name="y" default="0.0"/>
+  <arg name="z" default="0.6096"/>
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="$(anon camera_optical_tf)"
+        args="$(arg x) $(arg y) $(arg z) -1.5708 0 -1.5708 base_link camera_optical_frame"/>
+</launch>

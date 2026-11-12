@@ -1,0 +1,25 @@
+
+# global_costmap:
+#   global_frame: map
+#   robot_base_frame: base_link
+#   update_frequency: 5.0
+#   static_map: true
+
+
+global_costmap:
+  global_frame:       map
+  robot_base_frame:   base_link
+  update_frequency:   5.0
+  publish_frequency:  1.0
+  static_map:         false      # don’t call map_server once
+  rolling_window:     false
+ 
+  plugins:
+    - { name: static,    type: "costmap_2d::StaticLayer" }
+    - { name: obstacles, type: "costmap_2d::ObstacleLayer" }
+    - { name: inflation, type: "costmap_2d::InflationLayer" }
+ 
+static:
+  map_topic:           /map
+  subscribe_to_updates: true       # listen to slam_toolbox’s /map topic
+  first_map_only:      false       # keep updating as you slam :contentReference[oaicite:1]{index=1}

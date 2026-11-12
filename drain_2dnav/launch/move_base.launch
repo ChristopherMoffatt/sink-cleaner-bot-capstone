@@ -1,0 +1,33 @@
+<launch>
+
+    <remap from="scan" to="/front/scan"/>
+
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find drain_2dnav)/maps/map.yaml"/>
+
+    <!-- <include file="$(find amcl)/examples/amcl_omni.launch"/>  -->
+
+    <node pkg="amcl" type="amcl" name="amcl" output="screen">
+        <param name="use_map_topic" value="false"/>
+        <param name="odom_frame_id" value="odom"/>
+        <param name="base_frame_id" value="base_link"/>
+        <param name="global_frame_id" value="map"/>
+        <param name="odom_topic" value="odom"/>
+        <param name="scan_topic" value="/front/scan"/>
+    </node>
+
+    <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom"
+            args="0 0 0 0 0 0 1 map odom 100"/>
+    <node pkg="tf2_ros" type="static_transform_publisher" name="odom_to_base"
+            args="0 0 0 0 0 0 1 odom base_link 100"/> -->
+
+
+    <node pkg="move_base" type="move_base" name="move_base" respawn="false" output="screen">
+        <param name="base_global_planner" value="navfn/NavfnROS"/>
+        <rosparam file="$(find drain_2dnav)/config/costmap_common_params.yaml" command="load" ns="global_costmap"/>
+        <rosparam file="$(find drain_2dnav)/config/costmap_common_params.yaml" command="load" ns="local_costmap"/>
+        <rosparam file="$(find drain_2dnav)/config/global_costmap_params.yaml" command="load"/>
+        <rosparam file="$(find drain_2dnav)/config/local_costmap_params.yaml" command="load"/>
+        <rosparam file="$(find drain_2dnav)/config/base_local_planner_params.yaml" command="load"/>
+    </node>
+
+</launch>

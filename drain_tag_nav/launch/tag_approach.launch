@@ -1,0 +1,21 @@
+<launch>
+  <!-- Spin to find AprilTag 0, then drive toward it and stop 0.6 m away.
+       Needs: drain_safety estop.launch running, and the apriltag_tracking
+       Docker container publishing /tag_detections_json.
+       Hold L1 on the PS4 controller to override; press circle to e-stop. -->
+  <arg name="target_id" default="0"/>
+  <arg name="stop_distance" default="0.6"/>
+  <!-- Set to e.g. /tag_approach/cmd_vel_test for a dry run that cannot move the robot. -->
+  <arg name="cmd_vel_topic" default="/cmd_vel"/>
+
+  <!-- Camera mounting transform (base_link -> camera_optical_frame) is started
+       at boot via /etc/ros/noetic/ros.d/camera_tf.launch (symlink), so it is
+       not included here (the node name is anonymous, so a second copy would be harmless anyway). -->
+
+  <node pkg="drain_tag_nav" type="tag_approach_node.py" name="tag_approach" output="screen" required="true">
+    <rosparam command="load" file="$(find drain_tag_nav)/config/tag_approach.yaml"/>
+    <param name="target_id" value="$(arg target_id)"/>
+    <param name="stop_distance_m" value="$(arg stop_distance)"/>
+    <param name="cmd_vel_topic" value="$(arg cmd_vel_topic)"/>
+  </node>
+</launch>
